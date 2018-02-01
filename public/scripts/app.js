@@ -52,6 +52,7 @@ const data = [{
   }
 ];
 
+
 // 1. first step is to pull  the data from the database wich is given;
 $().ready(function() {
   var createTweetElement = function(database) {
@@ -60,7 +61,7 @@ $().ready(function() {
     let avatars = database.user.avatars.small;
     let handle = database.user.handle;
     let content = database.content.text;
-
+    let date = Math.floor((Date.now() - (database.created_at)) / 86400000);
     // 2. set up the html format;
     let tweetTemplate = [
       `<header>
@@ -68,24 +69,60 @@ $().ready(function() {
         <h2>${name}</h2>
         <span>${handle}</span>
         </header>`,
-      `<p>${content}</p>
-        <footer>
-        <p>X days ago</p>
-        </footer>`
+      `<p>${content}</p>`,
+      `<footer>
+        <p>${date} days ago</p>`,
+      '<i class="fa fa-flag" aria-hidden="true"></i>',
+      '<i class="fa fa-retweet" aria-hidden="true"></i>',
+      '<i class="fa fa-heart" aria-hidden="true"></i>',
+      '</footer>'
     ];
     // 3. by using .append method, put all data in to the html format;
     $tweet.append(tweetTemplate.join(''));
     return $tweet;
   };
 
-  var renderTweets = function(array) {
-
-    //4. go through the whole database and use each data case;
-    for (let eachCase of array) {
-      $('#tweet').append(createTweetElement(eachCase));
-    }
+  function renderTweets(tweets) {
+    tweets.forEach(function(data) {
+      $('#tweet').prepend(createTweetElement(data));
+    });
   };
 
-  renderTweets(data);
+  function loadRenderTweet() {
+    $('#tweet').empty()
+    $.ajax({
+      url: '/tweets',
+      method: 'GET',
+    }).done(function(data) {
+      console.log('Success :', data);
+      renderTweets(data);
+    });
+  };
+  loadRenderTweet();
+
+  $('.new-tweet form').on('submit', function(e) {
+    e.preventDefault();
+    var data = $('.new-tweet form').serialize();
+
+
+    if ($('textarea').val() === "") {
+      window.alert("you need to write something in a tweet!");
+    } else if ($('textarea').val().length > 140) {
+      window.alert("it should be under 140!");
+    } else {
+
+      $.post('/tweets', data).done(function() {
+        loadRenderTweet();
+      });
+      $(this).trigger('reset');
+      $('.new-tweet .counter').text('140');
+    }
+  });
+
+  // for compose
+  $('#nav-bar button').click(function() {
+    $('.new-tweet').slideToggle('fast');
+    $('.new-tweet textarea').focus();
+  });
 
 });
