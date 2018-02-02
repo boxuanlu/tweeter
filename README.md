@@ -21,4 +21,9 @@ This repository is the starter code for the project: Students will fork and clon
 
 ## DevDependencies
    - nodemon
+
+## Final product
+1.!["Screenshot of composeuse"](https://github.com/boxuanlu/tweeter/blob/master/docs/ComposeUse.png?raw=true)
+2.!["Screenshot of Textcount"](https://github.com/boxuanlu/tweeter/blob/master/docs/Textcount.png?raw=true)
+3.!["Screenshot of tweet"](https://github.com/boxuanlu/tweeter/blob/master/docs/tweetshow.png?raw=true)
   
