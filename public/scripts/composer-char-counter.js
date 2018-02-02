@@ -8,6 +8,8 @@ $(document).ready(function(){
     $(counter).html(spaceLeft);
     if (spaceLeft <=0) {
       $(counter).css({'color': 'red'});
+    }else{
+      $(counter).css({'color': 'black'});
     }
   });
 });
