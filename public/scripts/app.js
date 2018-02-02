@@ -81,37 +81,36 @@ $().ready(function() {
     $tweet.append(tweetTemplate.join(''));
     return $tweet;
   };
-// 4. render data from the database
+  // 4. render data from the database
   function renderTweets(tweets) {
     tweets.forEach(function(data) {
       $('#tweet').prepend(createTweetElement(data));
     });
   };
-//5. use ajax to get the data
+  //5. use ajax to get the data
   function loadRenderTweet() {
     $('#tweet').empty()
     $.ajax({
       url: '/tweets',
       method: 'GET',
     }).done(function(data) {
-      console.log('Success :', data);
       renderTweets(data);
     });
   };
   loadRenderTweet();
-//6. post the new tweet based on the different case.
+  //6. post the new tweet based on the different case.
   $('.new-tweet form').on('submit', function(e) {
     e.preventDefault();
     var data = $('.new-tweet form').serialize();
     if ($('textarea').val() === "") {
       window.alert("you need to write something in a tweet!"); // using windowalert to tell user
     } else if ($('textarea').val().length > 140) {
-      window.alert("it should be under 140!");// using windowalert to tell user
+      window.alert("it should be under 140!"); // using windowalert to tell user
     } else {
       $.post('/tweets', data).done(function() {
         loadRenderTweet();
       });
-      $(this).trigger('reset');//after post the new tweet, refresh the textarea.
+      $(this).trigger('reset'); //after post the new tweet, refresh the textarea.
       $('.new-tweet .counter').text('140');
     }
   });
