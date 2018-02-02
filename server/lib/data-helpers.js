@@ -13,7 +13,6 @@ module.exports = function makeDataHelpers(db) {
     getTweets: function(callback) {
       db.collection("tweets").find().toArray((err, results) => {
         const sortNewestFirst = (a, b) => a.created_at - b.created_at;
-        console.log(results);
         callback(null, results.sort(sortNewestFirst));
       });
     }
